@@ -81,20 +81,55 @@ public class Main {
                 String sigla = formatarSiglaCategoria(categorias[i]);
                 System.out.printf("%d. [%s] %s - R$ %.2f\n", (i + 1), sigla, descricoes[i], valores[i]);
             }
+
+            double valorTotal = calcularTotal(valores, cadastrados);
+            double mediaLancamento = calcularMediaLancamento(valores, cadastrados);
+            int indiceMaiorDespesa = encontrarIndiceMaiorDespesa(valores, cadastrados);
+            String orcamento = obterStatusOrcamento(valorTotal);
+
             System.out.println("-----------------------------------");
+            System.out.printf("Total gasto: %.2f\n", valorTotal);
+            System.out.printf("Media por lancamento: %.2f\n", mediaLancamento);
+            System.out.printf("Maior despesa: %s (R$ %.2f)\n", descricoes[indiceMaiorDespesa], valores[indiceMaiorDespesa]);
+            System.out.printf("Status - %s \n", orcamento);
+            System.out.println("Vagas restantes na memória: " + (5 - cadastrados));
         }
     }
 
     static double calcularTotal(double[] valores, int cadastrados) {
-        return 0.0;
+        double soma = 0.0;
+        for (int i = 0; i < cadastrados; i++) {
+            soma += valores[i];
+        }
+        return soma;
+    }
+
+    static double calcularMediaLancamento(double[] valores, int cadastrados) {
+        double valorTotal = calcularTotal(valores, cadastrados);
+        return valorTotal / cadastrados;
     }
 
     static int encontrarIndiceMaiorDespesa (double[] valores, int cadastrados) {
-        return 0;
+        int indiceDespesa = 0;
+        double maiorDespesa = 0.0;
+
+        for (int i = 0; i < cadastrados; i++) {
+            if (valores[i] > maiorDespesa) {
+                maiorDespesa = valores[i];
+                indiceDespesa = i;
+            }
+        }
+        return indiceDespesa;
     }
 
     static String obterStatusOrcamento (double totalGasto) {
-        return "";
+        if (totalGasto < 500) {
+            return "Você está dentro do orçamento";
+        } else if (totalGasto > 500 && totalGasto < 1500) {
+            return "Atenção: gaste moderadamente";
+        } else {
+            return "Alerta: orçamento estourado";
+        }
     }
 
     static String formatarSiglaCategoria (String categoria) {

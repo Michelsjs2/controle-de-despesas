@@ -26,7 +26,7 @@ public class Main {
                     if(totalCadastrados >= 5) {
                         System.out.println("Você atingiu o limite de cadastros de despesas. Não é possível realizar novos cadastros");
                     } else {
-                        cadastroDespesa(descricoes, categorias, valores, totalCadastrados);
+                        cadastroDespesa(descricoes, categorias, valores, totalCadastrados, scan);
                         if (!(descricoes[totalCadastrados] == null)) {
                             totalCadastrados++;
                         }
@@ -36,6 +36,7 @@ public class Main {
                     exibirRelatorioGeral(descricoes, categorias, valores, totalCadastrados);
                     break;
                 case 3:
+                    filtrarPorCategoria(descricoes, categorias, valores, totalCadastrados, scan);
                     break;
                 case 4:
                     System.out.println("Encerrando o sistema...");
@@ -47,9 +48,7 @@ public class Main {
         }
     }
 
-    static void cadastroDespesa(String[] descricoes, String[] categorias, double[] valores, int cadastrados) {
-        Scanner scan = new Scanner(System.in);
-
+    static void cadastroDespesa(String[] descricoes, String[] categorias, double[] valores, int cadastrados, Scanner scan) {
         System.out.println("--- Nova Despesa ---");
         System.out.print("Descrição: ");
         String descricao = scan.nextLine();
@@ -88,8 +87,8 @@ public class Main {
             String orcamento = obterStatusOrcamento(valorTotal);
 
             System.out.println("-----------------------------------");
-            System.out.printf("Total gasto: %.2f\n", valorTotal);
-            System.out.printf("Media por lancamento: %.2f\n", mediaLancamento);
+            System.out.printf("Total gasto: R$ %.2f\n", valorTotal);
+            System.out.printf("Media por lancamento: R$ %.2f\n", mediaLancamento);
             System.out.printf("Maior despesa: %s (R$ %.2f)\n", descricoes[indiceMaiorDespesa], valores[indiceMaiorDespesa]);
             System.out.printf("Status - %s \n", orcamento);
             System.out.println("Vagas restantes na memória: " + (5 - cadastrados));
@@ -136,7 +135,27 @@ public class Main {
         return categoria.substring(0, 3).toUpperCase();
     }
 
-    static void filtrarPorCategoria (String[] descricoes, String[] categorias, double[] valores, int cadastrados) {
+    static void filtrarPorCategoria (String[] descricoes, String[] categorias, double[] valores, int cadastrados, Scanner scan) {
+        double subtotal = 0.0;
+        double porcentagem = 0.0;
+        double valorTotal = calcularTotal(valores, cadastrados);
 
+        System.out.print("Digite a categoria para filtrar: ");
+        String filtro = scan.nextLine().toLowerCase();
+
+        System.out.printf("=== FILTRO: %s ===\n", filtro.toUpperCase());
+        for (int i = 0; i < cadastrados; i++) {
+            if(filtro.equals(categorias[i].toLowerCase())) {
+                System.out.printf("- %s: R$ %.2f\n", descricoes[i], valores[i]);
+                subtotal += valores[i];
+            }
+        }
+
+        porcentagem = (subtotal / valorTotal) * 100;
+        if (subtotal > 0) {
+            System.out.printf("Subtotal da categoria: R$ %.2f (%.2f%% do total)\n", subtotal, porcentagem);
+        } else {
+            System.out.println("Nenhum registro foi encontrado.");
+        }
     }
 }

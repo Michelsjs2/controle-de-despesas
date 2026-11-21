@@ -23,12 +23,17 @@ public class Main {
 
             switch (input) {
                 case 1:
-                    cadastroDespesa(descricoes, categorias, valores, totalCadastrados);
-                    if (!(descricoes[totalCadastrados] == null)) {
-                        totalCadastrados++;
+                    if(totalCadastrados >= 5) {
+                        System.out.println("Você atingiu o limite de cadastros de despesas. Não é possível realizar novos cadastros");
+                    } else {
+                        cadastroDespesa(descricoes, categorias, valores, totalCadastrados);
+                        if (!(descricoes[totalCadastrados] == null)) {
+                            totalCadastrados++;
+                        }
+                        break;
                     }
-                    break;
                 case 2:
+                    exibirRelatorioGeral(descricoes, categorias, valores, totalCadastrados);
                     break;
                 case 3:
                     break;
@@ -65,5 +70,38 @@ public class Main {
                 System.out.println("Despesa cadastrada com sucesso!");
             }
         }
+    }
+
+    static void exibirRelatorioGeral(String[] descricoes, String[] categorias, double[] valores, int cadastrados) {
+        if (cadastrados == 0) {
+            System.out.println("Nenhuma despesa cadastrada");
+        } else {
+            System.out.println("=== RELATORIO GERAL DE DESPESAS ===");
+            for (int i = 0; i < cadastrados; i++) {
+                String sigla = formatarSiglaCategoria(categorias[i]);
+                System.out.printf("%d. [%s] %s - R$ %.2f\n", (i + 1), sigla, descricoes[i], valores[i]);
+            }
+            System.out.println("-----------------------------------");
+        }
+    }
+
+    static double calcularTotal(double[] valores, int cadastrados) {
+        return 0.0;
+    }
+
+    static int encontrarIndiceMaiorDespesa (double[] valores, int cadastrados) {
+        return 0;
+    }
+
+    static String obterStatusOrcamento (double totalGasto) {
+        return "";
+    }
+
+    static String formatarSiglaCategoria (String categoria) {
+        return categoria.substring(0, 3).toUpperCase();
+    }
+
+    static void filtrarPorCategoria (String[] descricoes, String[] categorias, double[] valores, int cadastrados) {
+
     }
 }

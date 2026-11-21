@@ -27,11 +27,11 @@ public class Main {
                         System.out.println("Você atingiu o limite de cadastros de despesas. Não é possível realizar novos cadastros");
                     } else {
                         cadastroDespesa(descricoes, categorias, valores, totalCadastrados, scan);
-                        if (!(descricoes[totalCadastrados] == null)) {
+                        if (descricoes[totalCadastrados] != null) {
                             totalCadastrados++;
                         }
-                        break;
                     }
+                    break;
                 case 2:
                     exibirRelatorioGeral(descricoes, categorias, valores, totalCadastrados);
                     break;
@@ -60,7 +60,7 @@ public class Main {
         } else {
             System.out.print("Valor: ");
             double valor = Double.valueOf(scan.nextLine());
-            if (valor < 0) {
+            if (valor <= 0) {
                 System.out.println("Erro: o valor deve ser maior que zero.");
             } else {
                 descricoes[cadastrados] = descricao;
@@ -122,7 +122,7 @@ public class Main {
     }
 
     static String obterStatusOrcamento (double totalGasto) {
-        if (totalGasto < 500) {
+        if (totalGasto <= 500) {
             return "Você está dentro do orçamento";
         } else if (totalGasto > 500 && totalGasto < 1500) {
             return "Atenção: gaste moderadamente";
